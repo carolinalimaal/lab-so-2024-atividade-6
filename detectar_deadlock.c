@@ -6,7 +6,7 @@
 pthread_mutex_t lock1, lock2;
 
 // Variável de controle de deadlock
-int deadlock_detected = 0; 
+int deadlock_detectado = 0; 
 
 // Processo A
 void* processA(void* arg) {
@@ -36,16 +36,16 @@ void* processB(void* arg) {
 
 // Monitoramento para detecção de deadlock
 void* detectar_deadlock(void* arg) {
-    int time_waiting_A = 0;
-    int time_waiting_B = 0;
+    int tempo_espera_A = 0;
+    int tempo_espera_B = 0;
     
-    while (!deadlock_detected) {
+    while (!deadlock_detectado) {
         sleep(1); // Monitora a cada 1 segundo
-        time_waiting_A++;
-        time_waiting_B++;
+        tempo_espera_A++;
+        tempo_espera_B++;
         
         // Se os processos esperarem por mais de 5 segundos, detecta deadlock
-        if (time_waiting_A > 5 || time_waiting_B > 5) {
+        if (tempo_espera_A > 5 || tempo_espera_B > 5) {
             printf("Deadlock detectado!\n");
             
             // Forçar liberação dos recursos
@@ -53,7 +53,7 @@ void* detectar_deadlock(void* arg) {
             printf("Liberação forçada do lock1\n");
             pthread_mutex_unlock(&lock2);
             printf("Liberação forçada do lock2\n");
-            deadlock_detected = 1;
+            deadlock_detectado = 1;
         }
     }
     return NULL;
